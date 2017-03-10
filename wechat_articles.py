@@ -38,11 +38,18 @@ class Wechat:
         uin = re.findall(r'uin = "(\S+)"', str(data))
         key = re.findall(r'key = "(\S+)"', str(data))
         msg_list = re.findall(r'msgList = {(.*?)};', str(data),re.S)
-        print(uin)
-        print(key)
+        # print(uin)
+        # print(key)
         # print(msg_list[0])
-        msg_list_obg = "{" + msg_list[0] + "}"
-        print(simplejson.loads(msg_list_obg))
+        msg_list_str = "{" + msg_list[0] + "}"
+        #转为字典
+        msg_list_dict = simplejson.loads(msg_list_str)
+        # for key, value in msg_list_dict.iteritems():
+        app_msg_list = msg_list_dict.get("list")
+        for i in app_msg_list:
+            print(i.get("app_msg_ext_info"))
+            return;
+        # print(msg_list_dict.get("list"))
 
 wechat = Wechat()
 wechat.get_articles()
