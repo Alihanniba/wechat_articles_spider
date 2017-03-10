@@ -5,6 +5,7 @@ import bs4 #不推荐写法
 import re
 import request_ip
 import urllib.request
+import simplejson
 
 class Wechat:
     def __init__(self):
@@ -29,11 +30,19 @@ class Wechat:
         # soup = bs4.BeautifulSoup(r.text,"html.parser")
         # htmlFile = open(r"page1.html", "r")
         # content = htmlFile.read()
-        soup = bs4.BeautifulSoup(open("page1.html"))
+        soup = bs4.BeautifulSoup(open("page1.html"), "lxml")
         # minMsgId = soup.script.find_all("script", limit=40)
         # print(soup.prettify()) # 格式化输出
         script = soup.body.find_all("script")
-        print(script[-1])
+        data = script[-1]
+        uin = re.findall(r'uin = "(\S+)"', str(data))
+        key = re.findall(r'key = "(\S+)"', str(data))
+        msg_list = re.findall(r'msgList = {(.*?)};', str(data),re.S)
+        print(uin)
+        print(key)
+        # print(msg_list[0])
+        msg_list_obg = "{" + msg_list[0] + "}"
+        print(simplejson.loads(msg_list_obg))
 
 wechat = Wechat()
 wechat.get_articles()
