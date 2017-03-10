@@ -31,7 +31,9 @@ class Wechat:
         # content = htmlFile.read()
         soup = bs4.BeautifulSoup(open("page1.html"))
         # minMsgId = soup.script.find_all("script", limit=40)
-        print(soup.prettify()) # 格式化输出
+        # print(soup.prettify()) # 格式化输出
+        script = soup.body.find_all("script")
+        print(script[-1])
 
 wechat = Wechat()
 wechat.get_articles()
