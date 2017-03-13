@@ -16,8 +16,6 @@ class Wechat:
     def __init__(self, url=False):
         #获取随机IP
         # self._host = request_ip.RequestIP().getIP()
-        # self._url = 'https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI4MTA2OTA1Mg==&from=1&uin=MjA0NjcxNzUwMA%3D%3D&key=a9d7e7f2647cda56c09277a9e1a47fef133d1a25b4cfd8eeead76f2aed61c6f5355e67e48837ab9a3dad64409f91ed579ef27c1997432f18a6784cdbfbbb867e8e6586c247e49dd4865212ca4d7271e9&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.12.3+build(16D32)&version=12010310&lang=zh_CN&nettype=WIFI&ascene=0&fontScale=100&pass_ticket=9VNc%2BuPHO2Yfrgz2GS%2BZ5LA28LMVeV9fUaLHjtjIJZnP4deavqs3KHmdZ%2F%2Bax1Oo#wechat_webview_type=1'
-        
         self._url = url if url else 'https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI4MTA2OTA1Mg==&from=1&uin=MjA0NjcxNzUwMA%3D%3D&key=c6f43e46893b1d7168577e575e9e5c8aad63472dfc50c7a85c0b75f03e8906421832231046709cbd8f24df1be62c50cb2e91ef0fdcaf8d4db43f5afc8114dec7f4ee0ba59cff457fcdb9c27d787ee323&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.12.3+build(16D32)&version=12010310&lang=zh_CN&nettype=WIFI&ascene=0&fontScale=100&pass_ticket=FTqCr1yuWBC9yttmCpq8Bvic%2Bb5n93XB9SGPNxzCouAupq1k4hf3OAl3feIrc%2BOc#wechat_webview_type=1'
         self._headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;",
@@ -53,10 +51,15 @@ class Wechat:
         request = urllib.request.Request(self._url, headers = self._headers)
         response = self.opener.open(request)
         content = response.read().decode('UTF-8')
-        self.cookie.save(ignore_discard=True, ignore_expires=True)  # 保存cookie到cookie.txt中
+        # 保存cookie到cookie.txt中,  ### 其实不用
+        self.cookie.save(ignore_discard=True, ignore_expires=True)  
+        #以html解析格式打开
         soup = bs4.BeautifulSoup(content,"html.parser")
+        #获取script节点
         script = soup.body.find_all("script")
+        #数据在最后一个script节点中
         data = script[-1]
+        #解析所需参数
         uin = re.findall(r'uin = "(\S+)"', str(data))
         key = re.findall(r'key = "(\S+)"', str(data))
         self.uin = uin[0] if uin else ''
@@ -76,6 +79,7 @@ class Wechat:
         pass_ticket = re.subn('%', '%2525', pass_ticket_old[0])
         self.pass_ticket = pass_ticket[0]
 
+        #拼装URL
         full_url = self.start + '&uin=' + self.uin + '&key=' + self.key + '&f=' + self.f + '&frommsgid=' + str(self.frommsgid) + '&count=' + self.count + '&uin=' + self.f_uin + '&key=' + self.key + '&pass_ticket=' + self.pass_ticket + '&wxtoken=' + self.wxtoken + '&x5=' + self.x5
         self.get_data(full_url)
 
@@ -96,6 +100,7 @@ class Wechat:
         self.flag = True if count > 9 else False
         
         if self.flag:
+            #递归调用，仅frommsgid发生变化，微信下一页数据获取方式是拿当前页最后一条数据的ID作为参数请求URL
             self.frommsgid = general_msg_dict[9].get('comm_msg_info').get('id')
             full_url = self.start + '&uin=' + self.uin + '&key=' + self.key + '&f=' + self.f + '&frommsgid=' + str(self.frommsgid) + '&count=' + self.count + '&uin=' + self.f_uin + '&key=' + self.key + '&pass_ticket=' + self.pass_ticket + '&wxtoken=' + self.wxtoken + '&x5=' + self.x5
             self.get_data(full_url)
@@ -130,6 +135,7 @@ class Wechat:
                 #处理带有特殊字符字段
                 digest = "GO TO BE A FULL STACK \n GO TO BE A ARCHITECT" if wechat_id == 1000000001 else app_msg_ext_info.get('digest')
 
+                #组装数据，批量插入
                 a_strip_data = (copyright_stat, content_url, subtype, is_multi, author, cover, title, digest, content, source_url, fileid, custom, wechat_id, status, wechat_type, datetime, fakeid )
                 splited_data.append(a_strip_data)
 
@@ -137,7 +143,7 @@ class Wechat:
                 db=pymysql.connect(host="localhost",user="alihanniba",charset="utf8",password="",db="alihanniba.com");  
                 cursor=db.cursor()  
 
-            #创建表
+            #创建表，创建表之前应判断数据库中此表是否已存在，存在则删除
             sql="""CREATE TABLE IF NOT EXISTS `api_articles` ( 
                 `id` int(11) NOT NULL AUTO_INCREMENT, 
                 `copyright_stat` int(11) , 
