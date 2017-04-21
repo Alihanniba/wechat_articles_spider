@@ -44,7 +44,10 @@ class OfficialAccounts:
         # f.close;
         sub_nav_ul = soup.find_all("ul", class_ = "sub_nav_ul")
         catalog = sub_nav_ul[0].find_all("li")
-        print(catalog)
+        catalog_content = re.compile('')
+        ss = catalog[0].find_all("a")
+        
+        print(ss[0]['href'])
         return soup
 
     def get_data(self, url):
