@@ -85,6 +85,19 @@ class OfficialAccounts:
         soup = bs4.BeautifulSoup(content,"html.parser")
         sub_nav_ul = soup.find_all("div", class_ = "newslist")
         catalog = sub_nav_ul[0].find_all("dt")
+
+        #获取页码数据，抓取下一页
+        sub_page_div = soup.find_all("div", class_ = "page")
+        #当前页码数
+        current = sub_page_div[0].find_all('span', class_ = "current")[0].string
+        
+        #最后一个a标签
+        tag_a_array = sub_page_div[0].find_all('a')
+        
+        tag_a_last = tag_a_array[len(tag_a_array) - 1].string
+        print(tag_a_last)
+        return
+        
         #重置数据组装
         self.official_accounts_array = []
         
@@ -98,6 +111,9 @@ class OfficialAccounts:
         self.db.close()
         self.cursor.close()
         print('----------第一页插库成功----------------')
+        #抓取完一页后睡眠一秒
+        sleep(1000)
+
         return
     
     def get_thirdcategories(self, url, parent_id):
@@ -196,19 +212,19 @@ class OfficialAccounts:
         #获取微信公众号链接
         try:
             wechat_link = sub_description_div[2].find_all('a')[0]['href'] or ''
+            wechat_link = re.search('mp.weixin.qq.com', wechat_link) or ''
         except IndexError:
             wechat_link = ''
-        
-        print('微信名------' + name)
-        print('微信号------' + wechat_id)
-        print('关注度------' + attention_count)
-        print('所在地区------' + address)
-        print('收录时间------' + include_time)
-        print('外键ID------' + str(parent_id))
-        print('介绍------' + descriptions)
-        print('二维码------' + qrcode)
-        print('公众号链接------' + wechat_link)
-        print('背景头像------' + background_cover)
+        print('微信名--------------' + name)
+        print('微信号--------------' + wechat_id)
+        print('关注度--------------' + attention_count)
+        print('所在地区------------' + address)
+        print('收录时间------------' + include_time)
+        print('外键ID-------------' + str(parent_id))
+        print('介绍---------------' + descriptions)
+        print('二维码-------------' + qrcode)
+        print('公众号链接----------' + wechat_link)
+        print('背景头像------------' + background_cover)
         #组装数据
         one_account_data = (name, wechat_id, attention_count, address, include_time, parent_id, descriptions, qrcode, wechat_link, background_cover)
         self.official_accounts_array.append(one_account_data)
