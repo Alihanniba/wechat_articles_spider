@@ -80,6 +80,8 @@ class OfficialAccounts:
                     print('----------------     抓取二级分类  '+ content.string +'  开始    --------------------------')
                     self.get_subcategories(subcategory_url, subcategory_id)
                     print('----------------     抓取二级分类  '+ content.string +'  结束    --------------------------')
+                    print('--------     抓取二级分类  '+ content.string +'  结束休眠两秒    ----------------')
+                    time.sleep(2)
                     # return
                 # print(subcategory_url)
             print('----------------     抓取一级分类  '+ tag_a[0].string +'  结束    --------------------------')
@@ -117,9 +119,9 @@ class OfficialAccounts:
         print('----------第   '+ current +'   页插库进行中...----------------')
         
         print('----------第   '+ current +'   页插库成功---------------------')
-        #抓取完一页后睡眠一秒
-        print('-----------------     休眠一秒     --------------------------')
-        time.sleep(5)
+        #抓取完一页后睡眠两秒
+        print('----------    抓取完第   '+ current +'   页睡眠两秒     -------')
+        time.sleep(2)
 
         #最后一个a标签
         try:
