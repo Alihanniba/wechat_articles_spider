@@ -87,8 +87,8 @@ class OfficialAccounts:
     def get_subcategories(self, url, parent_id):
         request = urllib.request.Request(url, headers = self._headers)
         response = self.opener.open(request)
-        content = response.read().decode('UTF-8')
-        # content = response.read()
+        # content = response.read().decode('UTF-8')
+        content = response.read()
         # f = open("subcategory.html", "wb")
         # f.write(content)
         # f.close;
@@ -119,7 +119,7 @@ class OfficialAccounts:
         print('----------第   '+ current +'   页插库成功---------------------')
         #抓取完一页后睡眠一秒
         print('-----------------     休眠一秒     --------------------------')
-        time.sleep(1)
+        time.sleep(5)
 
         #最后一个a标签
         try:
@@ -141,8 +141,8 @@ class OfficialAccounts:
     def get_thirdcategories(self, url, parent_id):
         request = urllib.request.Request(url, headers = self._headers)
         response = self.opener.open(request)
-        content = response.read().decode('UTF-8')
-        # content = response.read()
+        # content = response.read().decode('UTF-8')
+        content = response.read()
         # f = open("thirdcategory.html", "wb")
         # f.write(content)
         # f.close;
