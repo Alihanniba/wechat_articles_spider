@@ -140,7 +140,7 @@ class Wechat:
                 splited_data.append(a_strip_data)
 
                 #连接数据库执行数据库操作
-                db=pymysql.connect(host="localhost",user="alihanniba",charset="utf8",password="",db="alihanniba.com");  
+                db=pymysql.connect(host="localhost",user="123456",charset="utf8",password="123456",db="alihanniba.com");  
                 cursor=db.cursor()  
 
             #创建表，创建表之前应判断数据库中此表是否已存在，存在则删除
