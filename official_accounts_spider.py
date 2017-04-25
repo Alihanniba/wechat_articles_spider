@@ -39,7 +39,7 @@ class OfficialAccounts:
         self.qrcode_url = self.base_url + '/images/qrcode/'
         self.cover_url = self.base_url + '/images/cover/'
         #连接数据库执行数据库操作
-        self.db=pymysql.connect(host="localhost",user="alihanniba",charset="utf8",password="77558@Mysql",db="wxpn");  
+        self.db=pymysql.connect(host="localhost",user="123456",charset="utf8",password="123456",db="wxpn");  
         self.cursor=self.db.cursor() 
        
     def get_index_page(self):
