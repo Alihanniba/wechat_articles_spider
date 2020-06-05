@@ -3,7 +3,7 @@ astroid==1.4.9
 beautifulsoup4==4.5.3
 click==6.7
 coverage==4.3.4
-Django==1.10.5
+Django==1.11.29
 django-cors-headers==2.0.2
 djangorestframework==3.5.4
 Flask==0.12
