@@ -19,7 +19,7 @@ mccabe==0.6.1
 mysql-connector==2.1.4
 packaging==16.8
 psycopg2==2.6.2
-Pygments==2.2.0
+Pygments==2.7.4
 pylint==1.6.5
 PyMySQL==0.7.10
 pyparsing==2.2.0
