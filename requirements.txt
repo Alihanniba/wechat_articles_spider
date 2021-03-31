@@ -13,7 +13,7 @@ itchat==1.2.27
 itsdangerous==0.24
 Jinja2==2.9.5
 lazy-object-proxy==1.2.2
-lxml==3.7.3
+lxml==4.6.3
 MarkupSafe==0.23
 mccabe==0.6.1
 mysql-connector==2.1.4
